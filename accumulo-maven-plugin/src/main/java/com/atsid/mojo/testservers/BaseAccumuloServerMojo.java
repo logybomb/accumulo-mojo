@@ -190,6 +190,7 @@ public abstract class BaseAccumuloServerMojo extends AbstractTestServerMojo
 		masterServerRunnable = new MasterServerRunnable(hostname,
 				baseDirectory, resolveClasspath(), this.getAccumuloQuiet());
 		Thread masterThread = new Thread(masterServerRunnable);
+		getLog().info("Accumulo Mojo master server starting");
 		masterThread.setDaemon(true);
 		masterThread.setName("Master Server " + System.currentTimeMillis());
 		masterThread.start();
@@ -210,6 +211,8 @@ public abstract class BaseAccumuloServerMojo extends AbstractTestServerMojo
 		TableInitializer tableInitializer = new TableInitializer(
 				this.accumuloInstanceName, this.zookeeperPort,
 				this.accumuloPassword);
+		getLog().info("Accumulo Mojo adding default tables: "+
+				Arrays.toString(this.getDefaultTables().toArray()));
 		tableInitializer.addTables(this.getDefaultTables());
 	}
 
@@ -217,6 +220,7 @@ public abstract class BaseAccumuloServerMojo extends AbstractTestServerMojo
 		gcServerRunner = new GCServerRunnable(baseDirectory,
 				resolveClasspath(), this.getAccumuloQuiet());
 		Thread gcThread = new Thread(gcServerRunner);
+		getLog().info("Accumulo Mojo GC server starting");
 		gcThread.setDaemon(true);
 		gcThread.setName("GC Server " + System.currentTimeMillis());
 		gcThread.start();
